@@ -13,20 +13,24 @@
  *   permissions and limitations under the License.
  */
 
+import { OPERATORS_MAP } from '../../../../CreateMonitor/components/MonitorExpressions/expressions/utils/constants';
+
 export const TRIGGER_TYPE = {
   AD: 'anomaly_detector_trigger',
   ALERT_TRIGGER: 'alerting_trigger',
 };
 
-export const FORMIK_INITIAL_VALUES = {
-  name: '',
-  severity: '1',
-  minTimeBetweenExecutions: null,
-  rollingWindowSize: null,
-  script: {
-    lang: 'painless',
-    source: `ctx.results[0].hits.total.value > 0`,
+export const FORMIK_INITIAL_BUCKET_SELECTOR_VALUES = {
+  buckets_path: {
+    '': '',
   },
+  parent_bucket_path: 'composite_agg',
+  script: {
+    source: 'params.',
+  },
+};
+
+export const FORMIK_INITIAL_TRIGGER_CONDITION_VALUES = {
   thresholdValue: 10000,
   thresholdEnum: 'ABOVE',
   anomalyDetector: {
@@ -35,6 +39,44 @@ export const FORMIK_INITIAL_VALUES = {
     anomalyGradeThresholdEnum: 'ABOVE',
     anomalyConfidenceThresholdValue: 0.7,
     anomalyConfidenceThresholdEnum: 'ABOVE',
+  },
+  script: {
+    lang: 'painless',
+    source: 'ctx.results[0].hits.total.value > 0',
+  },
+  buckets_path: {},
+  parent_bucket_path: 'composite_agg',
+  gap_policy: '',
+  queryMetric: '',
+  andOrCondition: '',
+};
+
+export const FORMIK_INITIAL_TRIGGER_VALUES = {
+  name: '',
+  severity: '1',
+  minTimeBetweenExecutions: null,
+  rollingWindowSize: null,
+  script: {
+    lang: 'painless',
+    source: `ctx.results[0].hits.total.value > 0`,
+  },
+  bucketSelector: JSON.stringify(FORMIK_INITIAL_BUCKET_SELECTOR_VALUES, null, 4), // TODO: To be used for Aggregation Triggers defined by query
+  triggerConditions: [],
+  thresholdValue: 10000,
+  thresholdEnum: 'ABOVE',
+  anomalyDetector: {
+    triggerType: TRIGGER_TYPE.AD,
+    anomalyGradeThresholdValue: 0.7,
+    anomalyGradeThresholdEnum: 'ABOVE',
+    anomalyConfidenceThresholdValue: 0.7,
+    anomalyConfidenceThresholdEnum: 'ABOVE',
+  },
+  where: {
+    fieldName: [],
+    operator: OPERATORS_MAP.IS,
+    fieldValue: '',
+    fieldRangeStart: 0,
+    fieldRangeEnd: 0,
   },
   actions: undefined,
 };

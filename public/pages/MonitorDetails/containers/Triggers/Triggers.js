@@ -52,17 +52,34 @@ export default class Triggers extends Component {
   onDelete() {
     const { selectedItems } = this.state;
     const { updateMonitor, monitor } = this.props;
+    const isAggregationMonitor = monitor.monitor_type === 'aggregation_monitor';
     const triggersToDelete = selectedItems.reduce(
-      (map, item) => ({ ...map, [item.name]: true }),
+      (map, item) => ({
+        ...map,
+        [item.name]: true,
+      }),
       {}
     );
-    const shouldKeepTrigger = trigger => !triggersToDelete[trigger.name];
+    const shouldKeepTrigger = (trigger) =>
+      !triggersToDelete[
+        isAggregationMonitor ? trigger.aggregation_trigger.name : trigger.traditional_trigger.name
+      ];
     const updatedTriggers = monitor.triggers.filter(shouldKeepTrigger);
     updateMonitor({ triggers: updatedTriggers });
   }
 
   onEdit() {
-    this.props.onEditTrigger(this.state.selectedItems[0]);
+    // TODO: Rewrapping the Trigger onEdit to avoid complicating triggerToFormik for now
+    const { monitor } = this.props;
+    const selectedTrigger = this.state.selectedItems[0];
+    const triggerType =
+      monitor.monitor_type === 'aggregation_monitor'
+        ? 'aggregation_trigger'
+        : 'traditional_trigger';
+    const wrappedTrigger = {
+      [triggerType]: selectedTrigger,
+    };
+    this.props.onEditTrigger(wrappedTrigger);
   }
 
   onSelectionChange(selectedItems) {
@@ -71,6 +88,19 @@ export default class Triggers extends Component {
 
   onTableChange({ sort: { field, direction } = {} }) {
     this.setState({ field, direction });
+  }
+
+  // TODO: For now, unwrapping all the Triggers since it's conflicting with the table
+  //   retrieving the 'id' and causing it to behave strangely
+  getUnwrappedTriggers(monitor) {
+    const isAggregationMonitor = monitor.monitor_type === 'aggregation_monitor';
+    return isAggregationMonitor
+      ? monitor.triggers.map((trigger) => {
+          return trigger.aggregation_trigger;
+        })
+      : monitor.triggers.map((trigger) => {
+          return trigger.traditional_trigger;
+        });
   }
 
   render() {
@@ -89,7 +119,7 @@ export default class Triggers extends Component {
         name: 'Number of actions',
         sortable: true,
         truncateText: false,
-        render: actions => actions.length,
+        render: (actions) => actions.length,
       },
       {
         field: 'severity',
@@ -125,7 +155,7 @@ export default class Triggers extends Component {
         ]}
       >
         <EuiInMemoryTable
-          items={monitor.triggers}
+          items={this.getUnwrappedTriggers(monitor)}
           itemId="id"
           key={tableKey}
           columns={columns}

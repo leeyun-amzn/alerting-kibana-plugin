@@ -36,6 +36,9 @@ import { TRIGGER_ACTIONS, SEARCH_TYPE } from '../../../../utils/constants';
 import { initializeFromQueryParams } from './utils/monitorQueryParams';
 import { SubmitErrorHandler } from '../../../../utils/SubmitErrorHandler';
 import { backendErrorNotification } from '../../../../utils/helpers';
+import MonitorDetails from '../MonitorDetails';
+import DataSource from '../DataSource';
+import Query from '../Query';
 
 export default class CreateMonitor extends Component {
   static defaultProps = {
@@ -134,17 +137,42 @@ export default class CreateMonitor extends Component {
     return (
       <div style={{ padding: '25px 50px' }}>
         <Formik initialValues={initialValues} onSubmit={this.onSubmit} validateOnChange={false}>
-          {({ values, errors, handleSubmit, isSubmitting, isValid }) => (
+          {({ values, errors, handleSubmit, isSubmitting, isValid, touched }) => (
             <Fragment>
               <EuiTitle size="l">
                 <h1>{edit ? 'Edit' : 'Create'} monitor</h1>
               </EuiTitle>
               <EuiSpacer />
-              <ConfigureMonitor httpClient={httpClient} monitorToEdit={monitorToEdit} />
+              <MonitorDetails
+                values={values}
+                errors={errors}
+                httpClient={httpClient}
+                monitorToEdit={monitorToEdit}
+                isAd={values.searchType === SEARCH_TYPE.AD}
+              />
+              <EuiSpacer />
+              {/*<ConfigureMonitor httpClient={httpClient} monitorToEdit={monitorToEdit} />*/}
+              {/*<EuiSpacer />*/}
+              {/*<DataSource*/}
+              {/*  values={values}*/}
+              {/*  errors={errors}*/}
+              {/*  httpClient={httpClient}*/}
+              {/*  detectorId={this.props.detectorId}*/}
+              {/*  notifications={notifications}*/}
+              {/*  isDarkMode={isDarkMode}*/}
+              {/*/>*/}
+              {/*<EuiSpacer />*/}
+              {/*<Query*/}
+              {/*  values={values}*/}
+              {/*  errors={errors}*/}
+              {/*  httpClient={httpClient}*/}
+              {/*  monitorToEdit={monitorToEdit}*/}
+              {/*/>*/}
               <EuiSpacer />
               <DefineMonitor
                 values={values}
                 errors={errors}
+                touched={touched}
                 httpClient={httpClient}
                 detectorId={this.props.detectorId}
                 notifications={notifications}
@@ -154,7 +182,6 @@ export default class CreateMonitor extends Component {
                 <EuiSpacer />
                 <DefineSchedule isAd={values.searchType === SEARCH_TYPE.AD} />
               </Fragment>
-              <EuiSpacer />
               <EuiSpacer />
               <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
                 <EuiFlexItem grow={false}>

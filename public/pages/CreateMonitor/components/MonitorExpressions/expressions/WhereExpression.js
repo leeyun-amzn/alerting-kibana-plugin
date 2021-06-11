@@ -16,7 +16,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'formik';
-import { EuiFlexGroup, EuiFlexItem, EuiPopover, EuiExpression, EuiText } from '@elastic/eui';
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiPopover,
+  EuiButtonEmpty,
+  EuiText,
+  EuiSpacer,
+  EuiBadge,
+} from '@elastic/eui';
 import _ from 'lodash';
 import {
   Expressions,
@@ -106,7 +114,7 @@ class WhereExpression extends Component {
           <FormikFieldNumber
             name="where.fieldRangeStart"
             fieldProps={{
-              validate: value => validateRange(value, values.where),
+              validate: (value) => validateRange(value, values.where),
             }}
             inputProps={{ onChange: this.handleChangeWrapper, isInvalid }}
           />
@@ -118,7 +126,7 @@ class WhereExpression extends Component {
           <FormikFieldNumber
             name="where.fieldRangeEnd"
             fieldProps={{
-              validate: value => validateRange(value, values.where),
+              validate: (value) => validateRange(value, values.where),
             }}
             inputProps={{ onChange: this.handleChangeWrapper, isInvalid }}
           />
@@ -173,52 +181,71 @@ class WhereExpression extends Component {
     const fieldOperator = _.get(values, 'where.operator', 'is');
 
     return (
-      <EuiPopover
-        id="where-popover"
-        button={
-          <EuiExpression
-            description="where"
-            value={displayText(values.where)}
-            isActive={openedStates.WHERE}
-            onClick={() => openExpression(Expressions.WHERE)}
-          />
-        }
-        isOpen={openedStates.WHERE}
-        closePopover={this.handleClosePopOver}
-        panelPaddingSize="none"
-        ownFocus
-        withTitle
-        anchorPosition="downLeft"
-      >
-        <div style={POPOVER_STYLE}>
-          <EuiFlexGroup style={{ ...EXPRESSION_STYLE }}>
-            <EuiFlexItem grow={false} style={{ width: 200 }}>
-              <FormikComboBox
-                name="where.fieldName"
-                inputProps={{
-                  placeholder: 'Select a field',
-                  options: indexFields,
-                  onChange: this.handleFieldChange,
-                  isClearable: false,
-                  singleSelection: { asPlainText: true },
-                }}
-              />
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <FormikSelect
-                name="where.operator"
-                inputProps={{
-                  onChange: this.handleOperatorChange,
-                  options: getOperators(fieldType),
-                }}
-              />
-            </EuiFlexItem>
-            {!isNullOperator(fieldOperator) && (
-              <EuiFlexItem>{this.renderValueField(fieldType, fieldOperator)}</EuiFlexItem>
-            )}
-          </EuiFlexGroup>
-        </div>
-      </EuiPopover>
+      <div>
+        <EuiText size="xs">
+          <h4>Where</h4>
+        </EuiText>
+        <EuiSpacer size="s" />
+        <EuiBadge
+          iconSide="right"
+          iconType="cross"
+          iconOnClick={() => this.resetValues()}
+          iconOnClickAriaLabel="Remove where filter"
+          onClick={() => {
+            openExpression(Expressions.WHERE);
+          }}
+          onClickAriaLabel="Edit where filter"
+        >
+          {displayText(values.where)}
+        </EuiBadge>
+        <EuiPopover
+          id="where-popover"
+          button={
+            <EuiButtonEmpty
+              size="xs"
+              data-test-subj="addFilterButton"
+              onClick={() => openExpression(Expressions.WHERE)}
+            >
+              Edit where filter
+            </EuiButtonEmpty>
+          }
+          isOpen={openedStates.WHERE}
+          closePopover={this.handleClosePopOver}
+          panelPaddingSize="none"
+          ownFocus
+          withTitle
+          anchorPosition="downLeft"
+        >
+          <div style={POPOVER_STYLE}>
+            <EuiFlexGroup style={{ ...EXPRESSION_STYLE }}>
+              <EuiFlexItem grow={false} style={{ width: 200 }}>
+                <FormikComboBox
+                  name="where.fieldName"
+                  inputProps={{
+                    placeholder: 'Select a field',
+                    options: indexFields,
+                    onChange: this.handleFieldChange,
+                    isClearable: false,
+                    singleSelection: { asPlainText: true },
+                  }}
+                />
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <FormikSelect
+                  name="where.operator"
+                  inputProps={{
+                    onChange: this.handleOperatorChange,
+                    options: getOperators(fieldType),
+                  }}
+                />
+              </EuiFlexItem>
+              {!isNullOperator(fieldOperator) && (
+                <EuiFlexItem>{this.renderValueField(fieldType, fieldOperator)}</EuiFlexItem>
+              )}
+            </EuiFlexGroup>
+          </div>
+        </EuiPopover>
+      </div>
     );
   }
 }
