@@ -153,23 +153,23 @@ export default class CreateMonitor extends Component {
               <EuiSpacer />
               <ConfigureMonitor httpClient={httpClient} monitorToEdit={monitorToEdit} />
               <EuiSpacer />
-              <DataSource
-                values={values}
-                errors={errors}
-                httpClient={httpClient}
-                detectorId={this.props.detectorId}
-                notifications={notifications}
-                isDarkMode={isDarkMode}
-              />
-              <EuiSpacer />
-              <Query
-                values={values}
-                errors={errors}
-                touched={touched}
-                httpClient={httpClient}
-                monitorToEdit={monitorToEdit}
-              />
-              <EuiSpacer />
+              {/*<DataSource*/}
+              {/*  values={values}*/}
+              {/*  errors={errors}*/}
+              {/*  httpClient={httpClient}*/}
+              {/*  detectorId={this.props.detectorId}*/}
+              {/*  notifications={notifications}*/}
+              {/*  isDarkMode={isDarkMode}*/}
+              {/*/>*/}
+              {/*<EuiSpacer />*/}
+              {/*<Query*/}
+              {/*  values={values}*/}
+              {/*  errors={errors}*/}
+              {/*  touched={touched}*/}
+              {/*  httpClient={httpClient}*/}
+              {/*  monitorToEdit={monitorToEdit}*/}
+              {/*/>*/}
+              {/*<EuiSpacer />*/}
               <DefineMonitor
                 values={values}
                 errors={errors}
