@@ -26,6 +26,7 @@ const onChangeDefinition = (e, form, resetResponse) => {
 
 const MonitorDefinitionCard = ({ values, resetResponse, plugins }) => {
   const hasADPlugin = plugins.indexOf(ES_AD_PLUGIN) !== -1;
+  const isAggregationMonitor = values.monitor_type === 'aggregation_monitor';
   return (
     <div>
       <EuiFlexGroup>
@@ -68,6 +69,28 @@ const MonitorDefinitionCard = ({ values, resetResponse, plugins }) => {
             }}
           />
         </EuiFlexItem>
+        {!isAggregationMonitor && (
+          <EuiFlexItem>
+            <EuiSpacer />
+            <FormikCheckableCard
+              name="searchTypeLocalUri"
+              formRow
+              rowProps={{
+                label: '',
+                style: { paddingLeft: '10px' },
+              }}
+              inputProps={{
+                id: 'localUriRadioCard',
+                label: 'Local URI Endpoint',
+                checked: values.searchType === 'localUri',
+                value: 'localUri',
+                onChange: (e, field, form) => {
+                  onChangeDefinition(e, form, resetResponse);
+                },
+              }}
+            />
+          </EuiFlexItem>
+        )}
         {/* TODO: only show the anomaly detector option when anomaly detection plugin is present */}
         {hasADPlugin && (
           <EuiFlexItem>

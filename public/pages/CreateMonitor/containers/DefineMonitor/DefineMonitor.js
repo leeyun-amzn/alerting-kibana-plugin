@@ -324,7 +324,6 @@ class DefineMonitor extends Component {
       ],
       content: (
         <React.Fragment>
-          <MonitorIndex httpClient={httpClient} />
           <div style={{ padding: '0px 10px' }}>{content}</div>
           <EuiSpacer size="m" />
           <QueryPerformance response={performanceResponse} />
@@ -425,13 +424,13 @@ class DefineMonitor extends Component {
                 <EuiSpacer size="s" />,
               ]
             : null}
-          <MonitorType resetResponse={this.resetResponse} />
-          {/*<EuiSpacer size="m" />*/}
+          <EuiSpacer size="s" />
           <MonitorDefinition
             resetResponse={this.resetResponse}
             plugins={this.state.plugins}
             isAggregationMonitor={isAggregationMonitor}
           />
+          <EuiSpacer size="s" />
           {monitorContent.content}
         </ContentPanel>
       </div>
