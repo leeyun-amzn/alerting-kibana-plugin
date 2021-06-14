@@ -425,13 +425,13 @@ class DefineMonitor extends Component {
                 <EuiSpacer size="s" />,
               ]
             : null}
-          {/*<MonitorType resetResponse={this.resetResponse} />*/}
+          <MonitorType resetResponse={this.resetResponse} />
           {/*<EuiSpacer size="m" />*/}
-          {/*<MonitorDefinition*/}
-          {/*  resetResponse={this.resetResponse}*/}
-          {/*  plugins={this.state.plugins}*/}
-          {/*  isAggregationMonitor={isAggregationMonitor}*/}
-          {/*/>*/}
+          <MonitorDefinition
+            resetResponse={this.resetResponse}
+            plugins={this.state.plugins}
+            isAggregationMonitor={isAggregationMonitor}
+          />
           {monitorContent.content}
         </ContentPanel>
       </div>

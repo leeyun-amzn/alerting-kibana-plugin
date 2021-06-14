@@ -41,7 +41,7 @@ const MonitorDetails = ({
   plugins,
 }) => (
   <ContentPanel title="Monitor details" titleSize="s" bodyStyles={{ padding: 'initial' }}>
-    <MonitorDefinitionCard />
+    <MonitorDefinitionCard plugins={plugins} resetResponse={resetResponse} />
     <EuiSpacer size="s" />
     <FormikFieldText
       name="name"

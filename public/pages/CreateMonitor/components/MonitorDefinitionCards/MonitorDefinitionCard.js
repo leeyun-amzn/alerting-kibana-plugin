@@ -16,74 +16,78 @@
 import React from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 import FormikCheckableCard from '../../../../components/FormControls/FormikCheckableCard/FormikCheckableCard';
+import { ES_AD_PLUGIN } from '../../../../utils/constants';
 
 const onChangeDefinition = (e, form, resetResponse) => {
   const type = e.target.value;
-  resetResponse();
+  // resetResponse();
   form.setFieldValue('searchType', type);
   // Debug use
   console.log('Entering onChange: ' + JSON.stringify(form));
 };
 
-const MonitorDefinitionCard = ({ resetResponse, plugins }) => (
-  <div>
-    <EuiFlexGroup>
-      <EuiFlexItem>
-        <FormikCheckableCard
-          name="searchType"
-          formRow
-          rowProps={{
-            label: 'Choose a monitor defining method',
-            style: { paddingLeft: '10px' },
-          }}
-          inputProps={{
-            id: 'visualEditorRadioCard',
-            label: 'Visual editor',
-            value: 'graph',
-            onChange: (e, field, form) => {
-              onChangeDefinition(e, form, resetResponse);
-            },
-          }}
-        />
-      </EuiFlexItem>
-      <EuiFlexItem>
-        <EuiSpacer />
-        <FormikCheckableCard
-          name="searchType"
-          formRow
-          rowProps={{
-            label: '',
-            style: { paddingLeft: '10px' },
-          }}
-          inputProps={{
-            id: 'extractionQueryEditorRadioCard',
-            label: 'Extraction query editor',
-            value: 'query',
-            onChange: (e, field, form) => {
-              onChangeDefinition(e, form, resetResponse);
-            },
-          }}
-        />
-      </EuiFlexItem>
-      {/* TODO: only show the anomaly detector option when anomaly detection plugin is present */}
-      {/*{isAd && (*/}
-      <EuiFlexItem>
-        <EuiSpacer />
-        <FormikCheckableCard
-          name="searchType"
-          inputProps={{
-            id: 'anomalyDetectorRadioCard',
-            label: 'Anomaly detector',
-            value: 'ad',
-            onChange: (e, field, form) => {
-              onChangeDefinition(e, form, resetResponse);
-            },
-          }}
-        />
-      </EuiFlexItem>
-      {/*)}*/}
-    </EuiFlexGroup>
-  </div>
-);
+const MonitorDefinitionCard = ({ resetResponse, plugins }) => {
+  const hasADPlugin = plugins.indexOf(ES_AD_PLUGIN) !== -1;
+  return (
+    <div>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <FormikCheckableCard
+            name="searchType"
+            formRow
+            rowProps={{
+              label: 'Choose a monitor defining method',
+              style: { paddingLeft: '10px' },
+            }}
+            inputProps={{
+              id: 'visualEditorRadioCard',
+              label: 'Visual editor',
+              value: 'graph',
+              onChange: (e, field, form) => {
+                onChangeDefinition(e, form, resetResponse);
+              },
+            }}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiSpacer />
+          <FormikCheckableCard
+            name="searchType"
+            formRow
+            rowProps={{
+              label: '',
+              style: { paddingLeft: '10px' },
+            }}
+            inputProps={{
+              id: 'extractionQueryEditorRadioCard',
+              label: 'Extraction query editor',
+              value: 'query',
+              onChange: (e, field, form) => {
+                onChangeDefinition(e, form, resetResponse);
+              },
+            }}
+          />
+        </EuiFlexItem>
+        {/* TODO: only show the anomaly detector option when anomaly detection plugin is present */}
+        {hasADPlugin && (
+          <EuiFlexItem>
+            <EuiSpacer />
+            <FormikCheckableCard
+              name="searchType"
+              inputProps={{
+                id: 'anomalyDetectorRadioCard',
+                label: 'Anomaly detector',
+                value: 'ad',
+                onChange: (e, field, form) => {
+                  onChangeDefinition(e, form, resetResponse);
+                },
+              }}
+            />
+          </EuiFlexItem>
+        )}
+      </EuiFlexGroup>
+    </div>
+  );
+};
 
 export default MonitorDefinitionCard;
