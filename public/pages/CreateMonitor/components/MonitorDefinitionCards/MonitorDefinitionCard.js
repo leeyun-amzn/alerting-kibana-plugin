@@ -16,7 +16,7 @@
 import React from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 import FormikCheckableCard from '../../../../components/FormControls/FormikCheckableCard/FormikCheckableCard';
-import { ES_AD_PLUGIN } from '../../../../utils/constants';
+import { ES_AD_PLUGIN, SEARCH_TYPE } from '../../../../utils/constants';
 
 const onChangeDefinition = (e, form, resetResponse) => {
   const type = e.target.value;
@@ -41,8 +41,8 @@ const MonitorDefinitionCard = ({ values, resetResponse, plugins }) => {
             inputProps={{
               id: 'visualEditorRadioCard',
               label: 'Visual editor',
-              checked: values.searchType === 'graph',
-              value: 'graph',
+              checked: values.searchType === SEARCH_TYPE.GRAPH,
+              value: SEARCH_TYPE.GRAPH,
               onChange: (e, field, form) => {
                 onChangeDefinition(e, form, resetResponse);
               },
@@ -61,8 +61,8 @@ const MonitorDefinitionCard = ({ values, resetResponse, plugins }) => {
             inputProps={{
               id: 'extractionQueryEditorRadioCard',
               label: 'Extraction query editor',
-              checked: values.searchType === 'query',
-              value: 'query',
+              checked: values.searchType === SEARCH_TYPE.QUERY,
+              value: SEARCH_TYPE.QUERY,
               onChange: (e, field, form) => {
                 onChangeDefinition(e, form, resetResponse);
               },
@@ -82,8 +82,8 @@ const MonitorDefinitionCard = ({ values, resetResponse, plugins }) => {
               inputProps={{
                 id: 'localUriRadioCard',
                 label: 'Local URI Endpoint',
-                checked: values.searchType === 'localUri',
-                value: 'localUri',
+                checked: values.searchType === SEARCH_TYPE.LOCAL_URI,
+                value: SEARCH_TYPE.LOCAL_URI,
                 onChange: (e, field, form) => {
                   onChangeDefinition(e, form, resetResponse);
                 },
@@ -100,8 +100,8 @@ const MonitorDefinitionCard = ({ values, resetResponse, plugins }) => {
               inputProps={{
                 id: 'anomalyDetectorRadioCard',
                 label: 'Anomaly detector',
-                checked: values.searchType === 'ad',
-                value: 'ad',
+                checked: values.searchType === SEARCH_TYPE.AD,
+                value: SEARCH_TYPE.AD,
                 onChange: (e, field, form) => {
                   onChangeDefinition(e, form, resetResponse);
                 },

@@ -180,8 +180,6 @@ export default class CreateMonitor extends Component {
                 isAd={values.searchType === SEARCH_TYPE.AD}
               />
               <EuiSpacer />
-              <ConfigureMonitor httpClient={httpClient} monitorToEdit={monitorToEdit} />
-              <EuiSpacer />
               <DefineMonitor
                 values={values}
                 errors={errors}
@@ -191,10 +189,6 @@ export default class CreateMonitor extends Component {
                 notifications={notifications}
                 isDarkMode={isDarkMode}
               />
-              <Fragment>
-                <EuiSpacer />
-                <DefineSchedule isAd={values.searchType === SEARCH_TYPE.AD} />
-              </Fragment>
               <EuiSpacer />
               <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
                 <EuiFlexItem grow={false}>
