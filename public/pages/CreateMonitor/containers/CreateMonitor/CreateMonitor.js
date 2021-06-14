@@ -66,6 +66,8 @@ export default class CreateMonitor extends Component {
     this.state = {
       initialValues,
       plugins: [],
+      response: null,
+      performanceResponse: null,
     };
 
     this.onCancel = this.onCancel.bind(this);
@@ -175,6 +177,7 @@ export default class CreateMonitor extends Component {
                 httpClient={httpClient}
                 monitorToEdit={monitorToEdit}
                 plugins={plugins}
+                isAd={values.searchType === SEARCH_TYPE.AD}
               />
               <EuiSpacer />
               <ConfigureMonitor httpClient={httpClient} monitorToEdit={monitorToEdit} />

@@ -21,19 +21,17 @@ import { ES_AD_PLUGIN } from '../../../../utils/constants';
 const onChangeDefinition = (e, form, resetResponse) => {
   const type = e.target.value;
   // resetResponse();
-  form.setFieldValue('searchType', type);
-  // Debug use
-  console.log('Entering onChange: ' + JSON.stringify(form));
+  form.setFieldValue('searchType', type, false);
 };
 
-const MonitorDefinitionCard = ({ resetResponse, plugins }) => {
+const MonitorDefinitionCard = ({ values, resetResponse, plugins }) => {
   const hasADPlugin = plugins.indexOf(ES_AD_PLUGIN) !== -1;
   return (
     <div>
       <EuiFlexGroup>
         <EuiFlexItem>
           <FormikCheckableCard
-            name="searchType"
+            name="searchTypeGraph"
             formRow
             rowProps={{
               label: 'Choose a monitor defining method',
@@ -42,6 +40,7 @@ const MonitorDefinitionCard = ({ resetResponse, plugins }) => {
             inputProps={{
               id: 'visualEditorRadioCard',
               label: 'Visual editor',
+              checked: values.searchType === 'graph',
               value: 'graph',
               onChange: (e, field, form) => {
                 onChangeDefinition(e, form, resetResponse);
@@ -52,7 +51,7 @@ const MonitorDefinitionCard = ({ resetResponse, plugins }) => {
         <EuiFlexItem>
           <EuiSpacer />
           <FormikCheckableCard
-            name="searchType"
+            name="searchTypeQuery"
             formRow
             rowProps={{
               label: '',
@@ -61,6 +60,7 @@ const MonitorDefinitionCard = ({ resetResponse, plugins }) => {
             inputProps={{
               id: 'extractionQueryEditorRadioCard',
               label: 'Extraction query editor',
+              checked: values.searchType === 'query',
               value: 'query',
               onChange: (e, field, form) => {
                 onChangeDefinition(e, form, resetResponse);
@@ -73,10 +73,11 @@ const MonitorDefinitionCard = ({ resetResponse, plugins }) => {
           <EuiFlexItem>
             <EuiSpacer />
             <FormikCheckableCard
-              name="searchType"
+              name="searchTypeAD"
               inputProps={{
                 id: 'anomalyDetectorRadioCard',
                 label: 'Anomaly detector',
+                checked: values.searchType === 'ad',
                 value: 'ad',
                 onChange: (e, field, form) => {
                   onChangeDefinition(e, form, resetResponse);

@@ -46,7 +46,6 @@ const selectDefinitions = (plugins, isAggregationMonitor) => {
 
 const MonitorDefinition = ({ resetResponse, plugins, isAggregationMonitor }) => (
   <div>
-    <MonitorDefinitionCard plugins={plugins} resetResponse={resetResponse} />
     <FormikSelect
       name="searchType"
       formRow
