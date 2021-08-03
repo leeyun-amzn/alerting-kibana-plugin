@@ -116,17 +116,19 @@ export default class VisualGraph extends Component {
   renderAggregationXYPlot = (data) => {
     const { annotation, thresholdValue, values, fieldName, aggregationType } = this.props;
     const { hint } = this.state;
+    // console.log('typeOf data: ' + typeof data);
+    // const firstDataArray = data['FEMALE'];
+    // console.log('firstDataArray: ' + JSON.stringify(firstDataArray));
     const xDomain = getXDomain(data);
     const yDomain = getYDomain(data);
     const annotations = getAnnotationData(xDomain, yDomain, thresholdValue);
     const xTitle = values.timeField;
     const yTitle = getYTitle(values);
     const leftPadding = getLeftPadding(yDomain);
-    const markData = getMarkData(data);
-    const rectData = getRectData(data);
+    // const markData = getMarkData(data);
+    // const rectData = getRectData(data);
     const aggregationTitle = getCustomAggregationTitle(values, fieldName, aggregationType);
-    // Debug use console.log('Printing out markData: ' + JSON.stringify(markData));
-    console.log('Printing out data: ' + JSON.stringify(data));
+
     return (
       <div>
         <FlexibleXYPlot
@@ -147,9 +149,8 @@ export default class VisualGraph extends Component {
             style={{ strokeWidth: '0px' }}
           />
           <YAxis title={yTitle} tickFormat={formatYAxisTick} />
-          {/*TODO: Convert to LineMarkSeries with individual data (e.g. "key1Data", "key2Data"*/}
-          <LineSeries data={data} style={LINE_STYLES} />
-          <MarkSeries data={markData} sizeRange={SIZE_RANGE} onNearestX={this.onNearestX} />
+          {/*TODO: Convert to BarSeries with individual data (e.g. "key1Data", "key2Data"*/}
+          {/*{this.renderBarSeries(data)}*/}
           {/*TODO: Add each group by data with a bar series graph using different colors*/}
           {/*<VerticalBarSeries data={rectData} />*/}
           {annotation && <LineSeries data={annotations} style={ANNOTATION_STYLES} />}
@@ -171,6 +172,13 @@ export default class VisualGraph extends Component {
     );
   };
 
+  // renderBarSeries = (data) => {
+  //   let barSeriesArray = [];
+  //   for (let dataSeries of data.values()) {
+  //     barSeriesArray.push(<VerticalBarSeries data={dataSeries} />);
+  //   }
+  //   return barSeriesArray;
+  // };
   renderEmptyData = () => (
     <div
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '450px' }}
@@ -185,13 +193,14 @@ export default class VisualGraph extends Component {
     const isTraditionalMonitor = monitorType === MONITOR_TYPE.TRADITIONAL;
     const aggTypeFieldName = `${aggregationType}_${fieldName}`;
 
-    // Debug use
-    console.log('values: ' + JSON.stringify(values));
     //TODO: Pass in the groupBy field to the following method in order to sort data
-    const data = getDataFromResponse(response, aggTypeFieldName, monitorType);
+    console.log('response: ' + JSON.stringify(response));
+    // const data = isTraditionalMonitor ? getDataFromResponse(response) : getMapDataFromResponse(response, aggTypeFieldName, values.groupBy);
+    const data = getDataFromResponse(response, aggTypeFieldName, monitorType, values.groupBy);
     // Show empty graph view when data is empty or aggregation monitor does not have group by defined.
     const showEmpty =
-      !data.length || (monitorType == MONITOR_TYPE.AGGREGATION && !values.groupBy.length);
+      (isTraditionalMonitor && !data.length) ||
+      (monitorType == MONITOR_TYPE.AGGREGATION && !values.groupBy.length);
 
     return (
       <div style={{ padding: '20px', border: '1px solid #D9D9D9', borderRadius: '5px' }}>
